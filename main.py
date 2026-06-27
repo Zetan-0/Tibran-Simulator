@@ -1,6 +1,7 @@
 import pygame
 import sys
 import random
+import math
 
 pygame.init()
 
@@ -12,11 +13,34 @@ pygame.display.set_caption("Tibran Simulator")
 SPACE_BLACK = (5, 5, 12)
 STAR_WHITE = (240, 240, 255)
 
+img1 = pygame.image.load("Visual Assets/galaxy.png")
+img2 = pygame.image.load("Visual Assets/galaxy2.png")
+img3 = pygame.image.load("Visual Assets/galaxy3.png")
+
+
+galaxy_sprites = [
+    pygame.transform.scale(img1, (24, 24)),
+    pygame.transform.scale(img2, (24, 24)),
+    pygame.transform.scale(img3, (24, 24))
+]
+
 star_list =[]
-for i in range(100):
-    x = random.randint(0, WIDTH)
-    y = random.randint(0, HEIGHT)
-    star_list.append((x, y))
+while len(star_list) < 100:
+    x = random.randint(20, WIDTH - 20)
+    y = random.randint(20, HEIGHT - 20)
+    
+
+    too_close = False
+    for star in star_list:
+        distance = math.hypot(x - star[0], y -star[1])
+        if distance < 45:
+            too_close = True
+            break
+
+
+    if not too_close:
+        chosen_sprite = random.choice(galaxy_sprites)
+        star_list.append((x, y, chosen_sprite))
 
 while True:
     for event in pygame.event.get():
@@ -31,7 +55,9 @@ while True:
 
 
     for star in star_list:
-        pygame.draw.circle(screen, STAR_WHITE, star, 2)
-
+        x_pos = star[0]
+        y_pos = star[1]
+        sprite = star[2]
+        screen.blit(sprite, (x_pos - 12, y_pos - 12))
 
     pygame.display.flip()
