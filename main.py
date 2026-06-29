@@ -17,6 +17,11 @@ img1 = pygame.image.load("Visual Assets/galaxy.png")
 img2 = pygame.image.load("Visual Assets/galaxy2.png")
 img3 = pygame.image.load("Visual Assets/galaxy3.png")
 
+bg_number = random.randint(1,6)
+bg_filename = f"Visual Assets/cosmic_background{bg_number}.jpg"
+
+bg_image = pygame.image.load(bg_filename)
+bg_surface = pygame.transform.scale(bg_image, (WIDTH, HEIGHT))
 
 galaxy_sprites = [
     pygame.transform.scale(img1, (24, 24)),
@@ -51,7 +56,7 @@ while True:
 
     screen.fill(SPACE_BLACK)
 
-
+    screen.blit(bg_surface, (0, 0))
 
 
     for star in star_list:
